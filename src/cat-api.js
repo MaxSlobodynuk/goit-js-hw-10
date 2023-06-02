@@ -33,7 +33,7 @@ const SECOND_URL = 'https://api.thecatapi.com/v1/images/search';
 //     });
 // }
 
-// -----------------------------------------
+// ----------------------------------------
 
 function fetchBreeds() {
     return fetch(`${BASE_URL}/breeds?api_key=${API_KEY}`)

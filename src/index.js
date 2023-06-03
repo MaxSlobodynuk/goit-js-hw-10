@@ -4,8 +4,7 @@ import Notiflix from 'notiflix';
 const select = document.querySelector('.breed-select');
 const catInfo = document.querySelector('.cat-info');
 const load = document.querySelector('.loader');
-const error = document.querySelector('.error');
-
+// const error = document.querySelector('.error');
 
 // function errorN() {
 //   error.style.display = 'none';
@@ -28,40 +27,28 @@ function showElements() {
   select.style.display = 'block';
   catInfo.style.display = 'block';
 }
-
 reloadF();
 function reloadF() {
   Notiflix.Loading.standard(`${load.textContent}`);
 }
 Notiflix.Loading.remove(1000);
 const timeout = setTimeout(() => {
-  fetchBreeds()
-    .then(data => {
-      const markup = createMarkup(data);
-      select.innerHTML = markup;
-    })
-    .catch(err => {
-      hideElements();
-      Notiflix.Report.failure(
-        'Oops! Something went wrong! Try reloading the page!'
-      );
-    });
+  fetch();
   showElements();
 }, 1200);
 
-function fetchBreeds() {
-  return fetch(`${BASE_URL}/breeds?api_key=${API_KEY}`)
-    .then(resp => {
-      if (!resp.ok) {
-        throw new Error(resp.statusText);
-      }
-      return resp.json();
-    })
-    .catch(err => {
-      console.log(err);
-    });
-}
+async function fetch() {
+  try {
+  const data = await fetchBreeds();
+  const markup = createMarkup(data);
+  select.innerHTML = markup;
+  } catch (err) {
+  hideElements();
+  Notiflix.Report.failure('Oops! Something went wrong! Try reloading the page!');
+  }
+  }
 
+  
 select.addEventListener('change', () => {
   const selectedOption = select.options[select.selectedIndex];
   const selectedValue = selectedOption.value;
@@ -112,24 +99,18 @@ function createMarkupInfo(ar) {
 }
 
 
+// import { fetchBreeds, fetchCatByBreed } from './cat-api.js';
+// import Notiflix from 'notiflix';
+
+// const select = document.querySelector('.breed-select');
+// const catInfo = document.querySelector('.cat-info');
+// const load = document.querySelector('.loader');
+// const error = document.querySelector('.error');
 
 
-
-
-
-
-
-
-// ---------------------------------------------------------
-
-
-
-
-// -------------------------------------------------------------
-
-// function errorN() {
-//   error.style.display = 'none';
-// }
+// // function errorN() {
+// //   error.style.display = 'none';
+// // }
 
 // function showLoader() {
 //   load.style.display = 'block';
@@ -148,27 +129,39 @@ function createMarkupInfo(ar) {
 //   select.style.display = 'block';
 //   catInfo.style.display = 'block';
 // }
+
 // reloadF();
 // function reloadF() {
 //   Notiflix.Loading.standard(`${load.textContent}`);
 // }
 // Notiflix.Loading.remove(1000);
 // const timeout = setTimeout(() => {
-//   fetch();
+//   fetchBreeds()
+//     .then(data => {
+//       const markup = createMarkup(data);
+//       select.innerHTML = markup;
+//     })
+//     .catch(err => {
+//       hideElements();
+//       Notiflix.Report.failure(
+//         'Oops! Something went wrong! Try reloading the page!'
+//       );
+//     });
 //   showElements();
 // }, 1200);
 
-// async function fetch() {
-//   try {
-//   const data = await fetchBreeds();
-//   const markup = createMarkup(data);
-//   select.innerHTML = markup;
-//   } catch (err) {
-//   hideElements();
-//   Notiflix.Report.failure('Oops! Something went wrong! Try reloading the page!');
-//   }
-//   }
-
+// function fetchBreeds() {
+//   return fetch(`${BASE_URL}/breeds?api_key=${API_KEY}`)
+//     .then(resp => {
+//       if (!resp.ok) {
+//         throw new Error(resp.statusText);
+//       }
+//       return resp.json();
+//     })
+//     .catch(err => {
+//       console.log(err);
+//     });
+// }
 
 // select.addEventListener('change', () => {
 //   const selectedOption = select.options[select.selectedIndex];
@@ -191,7 +184,7 @@ function createMarkupInfo(ar) {
 //     })
 //     .finally(() => {
 //       if (!fetchCatByBreed().catch) {
-//         errorN();
+//         // errorN();
 //         showElements();
 //       }
 //     });
